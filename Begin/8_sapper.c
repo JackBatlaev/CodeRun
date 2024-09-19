@@ -21,6 +21,10 @@ q,1≤1≤M - номер столбца мины.
 #include <stdlib.h>
 #include <string.h>
 
+#define MAX_N 100  // максимальные размеры для примера
+#define MAX_M 100
+#define MAX_MINES 10000
+
 int max(int a, int b) {
     return (a > b) ? a : b;
 }
@@ -53,16 +57,16 @@ void initField(struct Field *field, unsigned widht, unsigned height, unsigned mi
         unsigned y; scanf("%d", &y);
         x = max(0, x - 1); mineLocations[i][0] = x;
         y = max(0, y - 1); mineLocations[i][1] = y;
-        field->cells[x][y] = 9;
+        field->cells[x][y] = -1;
     }    
     //подсчет окружения
     for (size_t i = 0; i < field->height; i++) {
         for (size_t j = 0; j < field->width; j++) {
-            if (field->cells[i][j] == 9) continue;
+            if (field->cells[i][j] == -1) continue;
             int adjacentMine = 0;
             for (int r = max(0, i - 1); r <= min(field->height - 1, i + 1); r++) {
                 for (int c = max(0, j - 1); c <= min (field->height - 1, j + 1); c++) {
-                    if (/* (r == i && c == j) || */ field->cells[r][c] == 9 ) {
+                    if (field->cells[r][c] == -1 ) {
                         adjacentMine++;
                     }
                 }
@@ -70,18 +74,9 @@ void initField(struct Field *field, unsigned widht, unsigned height, unsigned mi
             field->cells[i][j] = adjacentMine;
         }
     }
-        /* for (size_t i = 0; i < field->height; i++){
-        for (size_t j = 0; j < field->width; j++){
-            printf("%d ", field->cells[i][j]);
-        }
-        printf("\n");
-    } */
 }
 
 void printField(struct Field *field){
-    //system("clear");//отчистака экрана
-
-    // печать поля
     for (int i = 0; i < field->height; i++) {
         for (int j = 0; j < field->width; j++) {
             if (field->cells[i][j] > 8) {
@@ -97,11 +92,10 @@ void printField(struct Field *field){
 
 int main() {
     struct Field field;
-    //ввод параметров поля
     unsigned N,M,K;
-    scanf("%d", &N);    if ((N < 1) || (N > 100)) return EXIT_FAILURE;
-    scanf("%d", &M);    if ((M < 1) || (M > 100)) return EXIT_FAILURE;
-    scanf("%d", &K);    if ((K < 0) || (K > N * M)) return EXIT_FAILURE;
+    scanf("%d", &N);
+    scanf("%d", &M);
+    scanf("%d", &K); 
 
     initField(&field, M, N, K);
 
