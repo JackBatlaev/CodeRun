@@ -56,5 +56,7 @@ void findConnectedComponent(Graph *graph, int startVertex, VertexInfo vertices[V
     dfs(graph, startVertex, vertices, visited);
 }
 
-int main(){ 
+int main() {
+    int numVertices, numEdges;
+    
 } 
